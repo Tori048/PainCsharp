@@ -17,7 +17,9 @@ namespace PainCsharp
         {
             InitializeComponent();
         }
-
+        private List<Image> files = new List<Image>();
+        private List<Bitmap> BitImage = new List<Bitmap>();
+        private int sizeMainLists = 0; // размеры files и BitImage
         public Image Histogramma(Image PictureOne)
         {
             Bitmap barChart = null;
@@ -187,7 +189,6 @@ namespace PainCsharp
 
         private void button3_Click(object sender, EventArgs e)
         {
-            
             if (pictureBox1.Image != null)
             {
                 Bitmap PictureOne = new Bitmap(pictureBox1.Image);
@@ -229,6 +230,7 @@ namespace PainCsharp
                                 Color pixel = new Color();
                                 pixel = Color.FromArgb(i);
                                 b2.SetPixel(x, y, pixel);
+
                             }
                         }
                         pictureBox1.Image = b2;
@@ -300,6 +302,47 @@ namespace PainCsharp
             {
                 MessageBox.Show("Хэй, что-то тут не так с номером или преобразованием\n" + ex.ToString());
             }
+        }
+
+        private void button6_Click(object sender, EventArgs e)
+        {
+            if (openFileDialog4.ShowDialog() == DialogResult.OK)
+            {
+                this.openFileDialog4.Filter = "Images (*.BMP;*)|*.BMP";
+            }
+            int j = 0;
+            //закидываем в новые битмапы все изображения по порядку
+            foreach(string i in openFileDialog4.FileNames)
+            {
+                files.Add(Image.FromFile(openFileDialog4.FileNames[j]));
+                BitImage.Add(new Bitmap(files[j]));
+                j++;
+            }
+            sizeMainLists = files.Count;
+        }
+
+        private void button7_Click(object sender, EventArgs e)
+        {
+            if(sizeMainLists > 0)
+            {
+                int i = 1;
+                //проверяем, что размеры у всех фото одинаковы
+                foreach (Bitmap im in BitImage)
+                {
+                    MessageBox.Show(BitImage[i].Width.ToString() + " " + BitImage[i - 1].Width.ToString() + " vs " + BitImage[i].Height.ToString() + " " + BitImage[i - 1].Height.ToString());
+                    if (BitImage[i].Width != BitImage[i - 1].Width || BitImage[i].Height != BitImage[i - 1].Height)
+                    {
+                        MessageBox.Show("Карамба!!! У изображений разные размеры!");
+                        return;
+                    }
+                    if(i< sizeMainLists-1)
+                    i++;
+                }
+
+
+
+            } //END sizeMainLists > 0
+
         }
     }
 }

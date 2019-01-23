@@ -49,6 +49,9 @@
             this.label4 = new System.Windows.Forms.Label();
             this.openFileDialog3 = new System.Windows.Forms.OpenFileDialog();
             this.comboBox2 = new System.Windows.Forms.ComboBox();
+            this.openFileDialog4 = new System.Windows.Forms.OpenFileDialog();
+            this.button6 = new System.Windows.Forms.Button();
+            this.button7 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).BeginInit();
@@ -236,11 +239,38 @@
             this.comboBox2.Size = new System.Drawing.Size(36, 21);
             this.comboBox2.TabIndex = 17;
             // 
+            // openFileDialog4
+            // 
+            this.openFileDialog4.FileName = "openFileDialog4";
+            this.openFileDialog4.Multiselect = true;
+            // 
+            // button6
+            // 
+            this.button6.Location = new System.Drawing.Point(668, 136);
+            this.button6.Name = "button6";
+            this.button6.Size = new System.Drawing.Size(187, 23);
+            this.button6.TabIndex = 18;
+            this.button6.Text = "Выбрать кучу изображений";
+            this.button6.UseVisualStyleBackColor = true;
+            this.button6.Click += new System.EventHandler(this.button6_Click);
+            // 
+            // button7
+            // 
+            this.button7.Location = new System.Drawing.Point(669, 165);
+            this.button7.Name = "button7";
+            this.button7.Size = new System.Drawing.Size(187, 34);
+            this.button7.TabIndex = 19;
+            this.button7.Text = "Прошить все изображения по пикселям";
+            this.button7.UseVisualStyleBackColor = true;
+            this.button7.Click += new System.EventHandler(this.button7_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(967, 713);
+            this.Controls.Add(this.button7);
+            this.Controls.Add(this.button6);
             this.Controls.Add(this.comboBox2);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.label3);
@@ -292,6 +322,9 @@
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.OpenFileDialog openFileDialog3;
         private System.Windows.Forms.ComboBox comboBox2;
+        private System.Windows.Forms.OpenFileDialog openFileDialog4;
+        private System.Windows.Forms.Button button6;
+        private System.Windows.Forms.Button button7;
     }
 }
 
