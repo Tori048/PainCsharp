@@ -187,42 +187,94 @@ namespace PainCsharp
 
         private void button3_Click(object sender, EventArgs e)
         {
-            //label1.Text = label1.Text + pictureBox1.Image.Width.ToString() + "x" + pictureBox1.Image.Height.ToString();
-            Bitmap PictureOne = new Bitmap(pictureBox1.Image); // это будем менять
-            Bitmap PictureTwo = new Bitmap(pictureBox2.Image); // это изображение останется неизменным
-            //for (int y = 0; y < PictureOne.Height; y++)
-            //    for (int x = 0; x < PictureOne.Width; x++)
-            //    {
-            //        var NewR = PictureOne.GetPixel(x, y).R;
-            //        var NewG = PictureOne.GetPixel(x, y).G;
-            //        var NewB = PictureOne.GetPixel(x, y).B;
-            //      //if (NewR > 240)
-            //      //      NewR = 240;
-            //      //  else if (NewG > 240)
-            //      //      NewG = 100;
-            //      //  else if (NewB > 240)
-            //      //      NewB = 10;
-            //            PictureOne.SetPixel(x, y, Color.FromArgb(NewR, NewG, NewB));
-            //    }
-           // pictureBox2.Image = PictureOne;
-            // пробуем создать гистограмму
-            Bitmap barChart = null;
-            Bitmap barChart2 = null;
-            barChart = new Bitmap(Histogramma(PictureOne));
-            barChart2 = new Bitmap(Histogramma(PictureTwo));
-            pictureBox3.Image = barChart;
-            pictureBox4.Image = barChart2;
-
+            
+            if (pictureBox1.Image != null)
+            {
+                Bitmap PictureOne = new Bitmap(pictureBox1.Image);
+                Bitmap barChart = null;
+                barChart = new Bitmap(Histogramma(PictureOne));
+                pictureBox3.Image = barChart;
+            }
+            if (pictureBox2.Image != null)
+            {
+                Bitmap PictureTwo = new Bitmap(pictureBox2.Image);
+                Bitmap barChart2 = null;
+                barChart2 = new Bitmap(Histogramma(PictureTwo));
+                pictureBox4.Image = barChart2;
+            }
         }
 
         private void button4_Click(object sender, EventArgs e)
         {
-            saveFileDialog1.Filter = "Image Files(*.BMP)|*.BMP|Image Files(*.JPG)|*.JPG|Image Files(*.GIF)|*.GIF|Image Files(*.PNG)|*.PNG|All files (*.*)|*.*";
-            if (saveFileDialog1.ShowDialog() == DialogResult.OK)
+            try
             {
-                pictureBox2.Image.Save(saveFileDialog1.FileName);
+                if (int.Parse(comboBox2.Text) == 1)
+                {
+                    List<string> file = new List<string>();
+                    if (openFileDialog3.ShowDialog() == DialogResult.OK)
+                    {
+                        file = File.ReadAllLines(openFileDialog3.FileName).ToList();
+                        if (file.Count() < 1) return; //Файл пустой!
+                        var width = file[0].Split(' ').Count() - 1; //В конце строки у нас есть дополнительный пробел!
+                        var heigh = file.Count;
+
+                        Bitmap b2 = new Bitmap(width, heigh);
+                        string[] s;
+                        for (var y = 0; y < heigh; y++)
+                        {
+                            s = file[y].TrimEnd(' ').Split(' ');
+                            for (var x = 0; x < width; x++)
+                            {
+                                var i = int.Parse(s[x]);
+                                Color pixel = new Color();
+                                pixel = Color.FromArgb(i);
+                                b2.SetPixel(x, y, pixel);
+                            }
+                        }
+                        pictureBox1.Image = b2;
+                        label1.Text = null;
+                        label1.Text = "Разрешение изображения: " + label1.Text + pictureBox1.Image.Width.ToString() + "x" + pictureBox1.Image.Height.ToString();
+                    }
+                }
+                else if (int.Parse(comboBox2.Text) == 2)
+                {
+                    List<string> file = new List<string>();
+                    if (openFileDialog3.ShowDialog() == DialogResult.OK)
+                    {
+                        file = File.ReadAllLines(openFileDialog3.FileName).ToList();
+                        if (file.Count() < 1) return; //Файл пустой!
+                        var width = file[0].Split(' ').Count() - 1; //В конце строки у нас есть дополнительный пробел!
+                        var heigh = file.Count;
+
+                        Bitmap b2 = new Bitmap(width, heigh);
+                        string[] s;
+                        for (var y = 0; y < heigh; y++)
+                        {
+                            s = file[y].TrimEnd(' ').Split(' ');
+                            for (var x = 0; x < width; x++)
+                            {
+                                var i = int.Parse(s[x]);
+                                Color pixel = new Color();
+                                pixel = Color.FromArgb(i);
+                                b2.SetPixel(x, y, pixel);
+                            }
+                        }
+                        pictureBox2.Image = b2;
+                        label2.Text = null;
+                        label2.Text = "Разрешение изображения: "+label2.Text + pictureBox2.Image.Width.ToString() + "x" + pictureBox2.Image.Height.ToString();
+                    }
+                }
             }
-            MessageBox.Show("Файл сохранен");
+            catch(FormatException)
+            {
+                MessageBox.Show("Выбранный текстбокс[" + comboBox2.Text+"], выбранный файл " + openFileDialog3.FileName + "\nЧто то из этого точно не в порядке");
+            }
+            //saveFileDialog1.Filter = "Image Files(*.BMP)|*.BMP|Image Files(*.JPG)|*.JPG|Image Files(*.GIF)|*.GIF|Image Files(*.PNG)|*.PNG|All files (*.*)|*.*";
+            //if (saveFileDialog1.ShowDialog() == DialogResult.OK)
+            //{
+            //    pictureBox2.Image.Save(saveFileDialog1.FileName);
+            //}
+            //MessageBox.Show("Файл сохранен");
         }
 
 
