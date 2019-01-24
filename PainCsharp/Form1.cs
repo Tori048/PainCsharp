@@ -323,13 +323,14 @@ namespace PainCsharp
 
         private void button7_Click(object sender, EventArgs e)
         {
-            if(sizeMainLists > 0)
+            if(sizeMainLists > 1)
             {
+                List<string> file_proba = new List<string>();
                 int i = 1;
                 //проверяем, что размеры у всех фото одинаковы
                 foreach (Bitmap im in BitImage)
                 {
-                    MessageBox.Show(BitImage[i].Width.ToString() + " " + BitImage[i - 1].Width.ToString() + " vs " + BitImage[i].Height.ToString() + " " + BitImage[i - 1].Height.ToString());
+                   // MessageBox.Show(BitImage[i].Width.ToString() + " " + BitImage[i - 1].Width.ToString() + " vs " + BitImage[i].Height.ToString() + " " + BitImage[i - 1].Height.ToString());
                     if (BitImage[i].Width != BitImage[i - 1].Width || BitImage[i].Height != BitImage[i - 1].Height)
                     {
                         MessageBox.Show("Карамба!!! У изображений разные размеры!");
@@ -338,10 +339,34 @@ namespace PainCsharp
                     if(i< sizeMainLists-1)
                     i++;
                 }
+                i = 0;
+                int Width = BitImage[1].Width; //ширина
+                int Height = BitImage[1].Height; //высота
 
+                progressBarConvertToTxt.Visible = true;
+                progressBarConvertToTxt.Maximum = Height;
+                for (int x=0;x<Height;x++)
+                {
+                    for(int y=0;y<Width;y++)
+                    {
+                        foreach(Bitmap pi in BitImage)
+                        {
+                            string pixels = pi.GetPixel(x, y).ToString();
+                            file_proba.Add(pixels);
+                            File.WriteAllLines("Proba.txt", file_proba);
+                        }
+                    }
+                    Application.DoEvents();
+                    progressBarConvertToTxt.Value++;
+                }
 
 
             } //END sizeMainLists > 0
+            else
+            {
+                MessageBox.Show("Тысяча чертей, мне нужно больше изображений!");
+                return;
+            }
 
         }
     }
