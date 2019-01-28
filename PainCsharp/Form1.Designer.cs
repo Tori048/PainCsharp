@@ -195,7 +195,6 @@
             this.progressConvertToTxt.Size = new System.Drawing.Size(298, 13);
             this.progressConvertToTxt.TabIndex = 13;
             this.progressConvertToTxt.Text = "Выполняется преобразование изображения в формат txt";
-            this.progressConvertToTxt.Visible = false;
             // 
             // label2
             // 

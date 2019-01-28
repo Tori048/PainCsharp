@@ -325,7 +325,8 @@ namespace PainCsharp
         {
             if(sizeMainLists > 1)
             {
-                List<string> file_proba = new List<string>();
+                Color color;
+                List<Byte> file_proba = new List<Byte>();
                 int i = 1;
                 //проверяем, что размеры у всех фото одинаковы
                 foreach (Bitmap im in BitImage)
@@ -342,24 +343,30 @@ namespace PainCsharp
                 i = 0;
                 int Width = BitImage[1].Width; //ширина
                 int Height = BitImage[1].Height; //высота
-
                 progressBarConvertToTxt.Visible = true;
-                progressBarConvertToTxt.Maximum = Height;
-                for (int x=0;x<Height;x++)
+                progressBarConvertToTxt.Maximum = Width* Height*BitImage.Count();
+               // Byte[] b = new Byte[Width * Height * BitImage.Count()];
+                // foreach (Bitmap pi in BitImage)
+                // {
+                for (int x = 0; x < Width; x++)
                 {
-                    for(int y=0;y<Width;y++)
+                    for (int y = 0; y < Height; y++)
                     {
-                        foreach(Bitmap pi in BitImage)
+                        for (int number = 0; number < BitImage.Count(); number++) 
                         {
-                            string pixels = pi.GetPixel(x, y).ToString();
-                            file_proba.Add(pixels);
-                            File.WriteAllLines("Proba.txt", file_proba);
-                        }
+                            color = BitImage[number].GetPixel(x, y);
+                            file_proba.Add(color.R);
+                            file_proba.Add(color.G);
+                            file_proba.Add(color.B);
+                            i++;
+                        } 
+                        progressBarConvertToTxt.Value = i;
+                        progressConvertToTxt.Text = "Пикселей обработано: "+i.ToString();
+                        //Application.DoEvents();
                     }
-                    Application.DoEvents();
-                    progressBarConvertToTxt.Value++;
                 }
-
+                File.WriteAllBytes("Proba.bin", file_proba.ToArray());
+                MessageBox.Show("Готово");
 
             } //END sizeMainLists > 0
             else
