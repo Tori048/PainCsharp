@@ -207,76 +207,106 @@ namespace PainCsharp
 
         private void button4_Click(object sender, EventArgs e)
         {
-            try
+            List<byte> file1 = new List<byte>();
+            int w = 320, h = 1200;
+            Bitmap im = new Bitmap(w, h);
+            Color color;
+            if (openFileDialog3.ShowDialog() == DialogResult.OK)
             {
-                if (int.Parse(comboBox2.Text) == 1)
+                file1 = File.ReadAllBytes(openFileDialog3.FileName).ToList();
+                if (file1.Count() < 1) return;
+                //else MessageBox.Show(file1.Count.ToString());
+                //for (int i = 0; i < 20; i++)
+                //{
+                //    MessageBox.Show((Convert.ToInt32(file1[i]).ToString()));
+                //}
+                for (int y = 0; y < h; y++)
                 {
-                    List<string> file = new List<string>();
-                    if (openFileDialog3.ShowDialog() == DialogResult.OK)
+                    for (int x = 0, xx = 0; x < w * 6;xx++)
                     {
-                        file = File.ReadAllLines(openFileDialog3.FileName).ToList();
-                        if (file.Count() < 1) return; //Файл пустой!
-                        var width = file[0].Split(' ').Count() - 1; //В конце строки у нас есть дополнительный пробел!
-                        var heigh = file.Count;
-
-                        Bitmap b2 = new Bitmap(width, heigh);
-                        string[] s;
-                        for (var y = 0; y < heigh; y++)
-                        {
-                            s = file[y].TrimEnd(' ').Split(' ');
-                            for (var x = 0; x < width; x++)
-                            {
-                                var i = int.Parse(s[x]);
-                                Color pixel = new Color();
-                                pixel = Color.FromArgb(i);
-                                b2.SetPixel(x, y, pixel);
-
-                            }
-                        }
-                        pictureBox1.Image = b2;
-                        label1.Text = null;
-                        label1.Text = "Разрешение изображения: " + label1.Text + pictureBox1.Image.Width.ToString() + "x" + pictureBox1.Image.Height.ToString();
+                        int r = Convert.ToInt32(file1[x]);
+                        int g = Convert.ToInt32(file1[x + 1]);
+                        int b = Convert.ToInt32(file1[x + 2]);
+                        color = Color.FromArgb(r, g, b);
+                        im.SetPixel(xx, y, color);
+                        x += 6;
                     }
                 }
-                else if (int.Parse(comboBox2.Text) == 2)
-                {
-                    List<string> file = new List<string>();
-                    if (openFileDialog3.ShowDialog() == DialogResult.OK)
-                    {
-                        file = File.ReadAllLines(openFileDialog3.FileName).ToList();
-                        if (file.Count() < 1) return; //Файл пустой!
-                        var width = file[0].Split(' ').Count() - 1; //В конце строки у нас есть дополнительный пробел!
-                        var heigh = file.Count;
-
-                        Bitmap b2 = new Bitmap(width, heigh);
-                        string[] s;
-                        for (var y = 0; y < heigh; y++)
-                        {
-                            s = file[y].TrimEnd(' ').Split(' ');
-                            for (var x = 0; x < width; x++)
-                            {
-                                var i = int.Parse(s[x]);
-                                Color pixel = new Color();
-                                pixel = Color.FromArgb(i);
-                                b2.SetPixel(x, y, pixel);
-                            }
-                        }
-                        pictureBox2.Image = b2;
-                        label2.Text = null;
-                        label2.Text = "Разрешение изображения: "+label2.Text + pictureBox2.Image.Width.ToString() + "x" + pictureBox2.Image.Height.ToString();
-                    }
-                }
+                pictureBox1.Image = im;
             }
-            catch(FormatException)
-            {
-                MessageBox.Show("Выбранный текстбокс[" + comboBox2.Text+"], выбранный файл " + openFileDialog3.FileName + "\nЧто то из этого точно не в порядке");
-            }
-            //saveFileDialog1.Filter = "Image Files(*.BMP)|*.BMP|Image Files(*.JPG)|*.JPG|Image Files(*.GIF)|*.GIF|Image Files(*.PNG)|*.PNG|All files (*.*)|*.*";
-            //if (saveFileDialog1.ShowDialog() == DialogResult.OK)
+            //try
             //{
-            //    pictureBox2.Image.Save(saveFileDialog1.FileName);
+            //    if (int.Parse(comboBox2.Text) == 1)
+            //    {
+            //        List<string> file = new List<string>();
+            //        if (openFileDialog3.ShowDialog() == DialogResult.OK)
+            //        {
+            //            file = File.ReadAllLines(openFileDialog3.FileName).ToList();
+            //            if (file.Count() < 1) return; //Файл пустой!
+            //            var width = file[0].Split(' ').Count() - 1; //В конце строки у нас есть дополнительный пробел!
+            //            var heigh = file.Count;
+
+            //            Bitmap b2 = new Bitmap(width, heigh);
+            //            string[] s;
+            //            for (var y = 0; y < heigh; y++)
+            //            {
+            //                s = file[y].TrimEnd(' ').Split(' ');
+            //                for (var x = 0; x < width; x++)
+            //                {
+            //                    var i = int.Parse(s[x]);
+            //                    Color pixel = new Color();
+            //                    pixel = Color.FromArgb(i);
+            //                    b2.SetPixel(x, y, pixel);
+
+            //                }
+            //            }
+            //            pictureBox1.Image = b2;
+            //            label1.Text = null;
+            //            label1.Text = "Разрешение изображения: " + label1.Text + pictureBox1.Image.Width.ToString() + "x" + pictureBox1.Image.Height.ToString();
+            //        }
+            //    }
+            //    else if (int.Parse(comboBox2.Text) == 2)
+            //    {
+            //        List<string> file = new List<string>();
+            //        if (openFileDialog3.ShowDialog() == DialogResult.OK)
+            //        {
+            //            file = File.ReadAllLines(openFileDialog3.FileName).ToList();
+            //            if (file.Count() < 1) return; //Файл пустой!
+            //            var width = file[0].Split(' ').Count() - 1; //В конце строки у нас есть дополнительный пробел!
+            //            var heigh = file.Count;
+
+            //            Bitmap b2 = new Bitmap(width, heigh);
+            //            string[] s;
+            //            for (var y = 0; y < heigh; y++)
+            //            {
+            //                s = file[y].TrimEnd(' ').Split(' ');
+            //                for (var x = 0; x < width; x++)
+            //                {
+            //                    var i = int.Parse(s[x]);
+            //                    Color pixel = new Color();
+            //                    pixel = Color.FromArgb(i);
+            //                    b2.SetPixel(x, y, pixel);
+            //                }
+            //            }
+            //            pictureBox2.Image = b2;
+            //            label2.Text = null;
+            //            label2.Text = "Разрешение изображения: " + label2.Text + pictureBox2.Image.Width.ToString() + "x" + pictureBox2.Image.Height.ToString();
+            //        }
+            //    }
             //}
-            //MessageBox.Show("Файл сохранен");
+            //catch (FormatException)
+            //{
+            //    MessageBox.Show("Выбранный текстбокс[" + comboBox2.Text + "], выбранный файл " + openFileDialog3.FileName + "\nЧто то из этого точно не в порядке");
+            //}
+            if (int.Parse(comboBox2.Text) == 1)
+            {
+                saveFileDialog1.Filter = "Image Files(*.BMP)|*.BMP|Image Files(*.JPG)|*.JPG|Image Files(*.GIF)|*.GIF|Image Files(*.PNG)|*.PNG|All files (*.*)|*.*";
+                if (saveFileDialog1.ShowDialog() == DialogResult.OK)
+                {
+                    pictureBox1.Image.Save(saveFileDialog1.FileName);
+                }
+                MessageBox.Show("Файл сохранен " + pictureBox1.Image);
+            }
         }
 
 
@@ -348,9 +378,9 @@ namespace PainCsharp
                // Byte[] b = new Byte[Width * Height * BitImage.Count()];
                 // foreach (Bitmap pi in BitImage)
                 // {
-                for (int x = 0; x < Width; x++)
+                for (int y = 0; y < Height; y++)
                 {
-                    for (int y = 0; y < Height; y++)
+                    for (int x = 0; x < Width; x++)
                     {
                         for (int number = 0; number < BitImage.Count(); number++) 
                         {
